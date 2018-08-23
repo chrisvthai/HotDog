@@ -85,13 +85,18 @@ def main(_):
       elif FLAGS.predict_image != "":
         predicted = tf.argmax(y_conv, 1)
         x_single_img = sess.run(read_single_image(FLAGS.predict_image))
-        image = x_single_img
-        image = np.array(image, dtype='int64')
-        pixels = image.reshape((28, 28, 3))
-        print(pixels)
+       
+        pixels = mpimg.imread(FLAGS.predict_image)
         plt.imshow(pixels)
+
+        result = le.inverse_transform(sess.run(predicted, feed_dict={x: x_single_img}))[0]
+        if result == 'hotdog':
+          text = 'This is a hotdog, right?'
+        else:
+          text = 'This isn\'t a hotdog, right?'
+        plt.title(text)
         plt.show()
-        print('You got %s'%le.inverse_transform(sess.run(predicted,feed_dict={x:x_single_img}))[0])
+        # print('You got %s'%le.inverse_transform(sess.run(predicted,feed_dict={x:x_single_img}))[0])
 
 
 
