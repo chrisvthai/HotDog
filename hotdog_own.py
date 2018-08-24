@@ -3,9 +3,9 @@ from tensorflow.python.platform import gfile
 import os
 import numpy as np
 import argparse
-import matplotlib
-matplotlib.use('agg')
+# matplotlib.use('agg')
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import sys
 from sklearn import preprocessing
 from read_data import prepare_data,read_image_array,read_single_image
@@ -67,7 +67,8 @@ def main(_):
       saver.restore(sess, path + 'test-model')
       file_list, y_image_label = prepare_data(FLAGS.image_dir)
       le = preprocessing.LabelEncoder()
-      y_one_hot = tf.one_hot(le.fit_transform(y_image_label),depth=2)
+      labels = ['hotdog', 'not_a_hotdog']
+      y_one_hot = tf.one_hot(le.fit_transform(labels),depth=2)
 
       if FLAGS.train:
 
